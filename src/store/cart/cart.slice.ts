@@ -3,13 +3,11 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppState} from "../app.store";
 
 interface CartState {
-  itemsCount: number;
   lastUpdate: Date | null;
   items: CartItemInterface[];
 }
 
 const initialState: CartState = {
-  itemsCount: 0,
   lastUpdate: null,
   items: [],
 };
@@ -56,7 +54,14 @@ export const cartSlice = createSlice({
 
 export const selectAllItems = (state: AppState) => state.cart.items;
 export const selectItemsById = (itemId: number) => (state: AppState) => state.cart.items.filter((e: CartItemInterface) => e.id === itemId);
-export const selectItemsCount = (state: AppState) => state.cart.itemsCount;
+export const selectItemsCount = (state: AppState) => {
+  let itemsCount = 0;
+  state.cart.items.map((e) => {
+    itemsCount += e.itemsCount;
+    return true;
+  })
+  return itemsCount;
+};
 
 
 export const {

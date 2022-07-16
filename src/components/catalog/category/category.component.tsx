@@ -19,6 +19,7 @@ export function CategoryComponent (props: CategoryComponentProps) {
     >
       {props.useImages && (
         <CardMedia
+          component={'div'}
           sx={{
             backgroundImage: `url(${CategoryImage})`,
             height: getCategoryCardImageSize(),

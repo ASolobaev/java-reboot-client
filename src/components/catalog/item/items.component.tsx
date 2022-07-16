@@ -23,7 +23,7 @@ export function ItemsComponent () {
   return (
     <Grid container sx={{ margin: 0, padding: 0 }}>
       {itemsRequestStatus === RequestStatuses.SUCCESS && itemsList && itemsList.map((e: ItemInterface, index) =>
-        <Grid item xs={3} padding={1}>
+        <Grid item xs={3} padding={1} key={e.name+index+e.id}>
           <ItemComponent data={e} identifier={`${index}ID:${e.id}`} useImages={true} />
         </Grid>
       )}

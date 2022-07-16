@@ -14,7 +14,6 @@ export const isProduction = (): Boolean => {
 }
 
 export const useMockCategories = () => (dispatch: AppDispatch) => {
-  console.log('called!')
   const mockedCategories: CategoryInterface[] = [
     {
       id: 1,

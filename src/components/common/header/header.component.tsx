@@ -1,9 +1,11 @@
 import {
-  AppBar,
+  AppBar, Box, Stack,
   Toolbar,
   Typography
 } from "@mui/material";
 import {getAppName} from "../../../store/utils";
+import {CartBubbleComponent} from "../cart/cart.component";
+import {UserBubbleComponent} from "../user/user.component";
 
 export function HeaderComponent () {
   return (
@@ -23,6 +25,13 @@ export function HeaderComponent () {
           {getAppName()}
         </Typography>
 
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={1}
+        >
+          <CartBubbleComponent />
+          <UserBubbleComponent />
+        </Stack>
       </Toolbar>
     </AppBar>
   );

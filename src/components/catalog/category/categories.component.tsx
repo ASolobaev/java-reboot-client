@@ -21,7 +21,7 @@ export function CategoriesComponent () {
   return (
     <Grid container>
       {categoriesList && categoriesList.map((e: CategoryInterface, index) =>
-        <Grid item xs={3} padding={1}>
+        <Grid item xs={3} padding={1} key={e.name+index+e.id}>
           <CategoryComponent useImages={true} data={e} identifier={`${index}id:${e.id}`} />
         </Grid>
       )}

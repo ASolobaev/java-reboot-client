@@ -29,14 +29,13 @@ export function ItemComponent (props: ItemComponentProps) {
   const dispatch = useAppDispatch();
   const cartItem = useAppSelector(selectItemsById(props.data.id))[0];
 
-  console.log(cartItem);
-
   return (
     <Card
       key={props.identifier}
     >
       {props.useImages && (
         <CardMedia
+          component={'div'}
           sx={{
             backgroundImage: `url(${ItemImage})`,
             height: getItemCardImageSize(),

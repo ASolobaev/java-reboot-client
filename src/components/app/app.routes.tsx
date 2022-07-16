@@ -13,6 +13,8 @@ export function AppRoutes () {
       </Route>
       <Route path={'/user'} element={<Error404Page />} />
       <Route path={'/cart'} element={<Error404Page />} />
+
+      <Route path={"*"} element={<Error404Page />} />
     </Routes>
   );
 }
