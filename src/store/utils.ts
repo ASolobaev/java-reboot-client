@@ -39,7 +39,7 @@ export const useMockCategories = () => (dispatch: AppDispatch) => {
 export const useMockItems = (categoryId: number) => (dispatch: AppDispatch) => {
   const mockedItems: ItemInterface[] = [
     {
-      id: 1 + categoryId,
+      id: 100 + categoryId,
       category: categoryId,
       name: 'Чай',
       description: 'Черный чай',
@@ -48,7 +48,7 @@ export const useMockItems = (categoryId: number) => (dispatch: AppDispatch) => {
       price: 69.90
     },
     {
-      id: 2 + categoryId,
+      id: 200 + categoryId,
       category: categoryId,
       name: 'Кетчуп томатный',
       description: 'С добавлением кусочков овощей',
@@ -57,13 +57,31 @@ export const useMockItems = (categoryId: number) => (dispatch: AppDispatch) => {
       price: 89.70
     },
     {
-      id: 3 + categoryId,
+      id: 300 + categoryId,
       category: categoryId,
       name: 'Пельмени',
       description: 'По домашнему',
       manufacturer: 'Михалыч',
       quantity: 100,
       price: 259.10
+    },
+    {
+      id: 400 + categoryId,
+      category: categoryId,
+      name: 'Coca-Cola',
+      description: 'Санкционочка',
+      manufacturer: 'Pepsi Co',
+      quantity: 100,
+      price: 79
+    },
+    {
+      id: 500 + categoryId,
+      category: categoryId,
+      name: 'Cool Cola',
+      description: 'Главное - не приглядываться к названию ;)',
+      manufacturer: 'Черноголовка',
+      quantity: 100,
+      price: 99.90
     },
   ]
   dispatch(setItemsList(mockedItems));
@@ -72,3 +90,5 @@ export const useMockItems = (categoryId: number) => (dispatch: AppDispatch) => {
 
 export const getAppName = () => 'SMarket';
 export const getDrawerWidth = () => 240;
+export const getCategoryCardImageSize = () => 10;
+export const getItemCardImageSize = () => 10;
