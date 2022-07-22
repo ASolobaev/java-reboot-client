@@ -5,11 +5,13 @@ import {AppState} from "../app.store";
 interface CartState {
   lastUpdate: Date | null;
   items: CartItemInterface[];
+  orderItems: number[];
 }
 
 const initialState: CartState = {
   lastUpdate: null,
   items: [],
+  orderItems: [],
 };
 
 export const cartSlice = createSlice({
@@ -46,8 +48,20 @@ export const cartSlice = createSlice({
         return false;
       });
     },
-    clear: (state: CartState) => {
-      state.items.splice(0, state.items.length - 1);
+    clearCart: (state: CartState) => {
+      state.items = [];
+    },
+    addToOrder: (state: CartState, action: PayloadAction<number>) => {
+      state.orderItems.push(action.payload);
+    },
+    removeFromOrder: (state: CartState, action: PayloadAction<number>) => {
+      state.orderItems.map((e: number, index) => {
+        if (e == action.payload) {
+          state.orderItems.splice(index, 1);
+          return true;
+        }
+        return false;
+      });
     },
   },
 });
@@ -62,14 +76,49 @@ export const selectItemsCount = (state: AppState) => {
   })
   return itemsCount;
 };
+export const selectOrderedItems = (state: AppState) => state.cart.orderItems;
+export const selectOrderPrice = (state: AppState) => {
+  let result = 0;
 
+  for (let i = 0; i < state.cart.orderItems.length; i++) {
+    const id = state.cart.orderItems[i];
+    for (let j = 0; j < state.cart.items.length; j++) {
+      const item = state.cart.items[j];
+
+      if (item.id === id) {
+        result += item.price * item.itemsCount;
+        break;
+      }
+    }
+  }
+  return result;
+}
+export const selectOrderedItemCount = (state: AppState) => {
+  let result = 0;
+  for (let i = 0; i < state.cart.orderItems.length; i++) {
+    const id = state.cart.orderItems[i];
+    for (let j = 0; j < state.cart.items.length; j++) {
+      const item = state.cart.items[j];
+
+      if (item.id === id) {
+        result += item.itemsCount;
+        break;
+      }
+    }
+  }
+  return result;
+}
+
+export const selectOrder = (state: AppState) => state.cart.items.filter((item) => state.cart.orderItems.indexOf(item.id) !== -1);
 
 export const {
   addToCart,
   removeFromCart,
   itemIncrement,
   itemDecrement,
-  clear
+  clearCart,
+  addToOrder,
+  removeFromOrder,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

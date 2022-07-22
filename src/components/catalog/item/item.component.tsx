@@ -16,7 +16,14 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import {useAppDispatch, useAppSelector} from "../../../store/app.store";
-import {addToCart, itemDecrement, itemIncrement, removeFromCart, selectItemsById} from "../../../store/cart/cart.slice";
+import {
+  addToCart, addToOrder,
+  itemDecrement,
+  itemIncrement,
+  removeFromCart,
+  removeFromOrder,
+  selectItemsById
+} from "../../../store/cart/cart.slice";
 import {CartItemInterface} from "../../../interfaces/cart-item.interface";
 
 interface ItemComponentProps {
@@ -71,19 +78,23 @@ export function ItemComponent (props: ItemComponentProps) {
         {cartItem && (
           <Paper sx={{ padding: '2px' }}>
             {cartItem.itemsCount <= 1 && (
-              <IconButton onClick={() => dispatch(removeFromCart(cartItem))}><DeleteForeverIcon fontSize={'small'}/></IconButton>
+              <IconButton onClick={() => {
+                dispatch(removeFromCart(cartItem));
+                dispatch(removeFromOrder(cartItem.id));
+              }}><DeleteForeverIcon fontSize={'small'}/></IconButton>
             )}
             {cartItem.itemsCount > 1 && (
               <IconButton onClick={() => dispatch(itemDecrement(props.data.id))}><RemoveIcon fontSize={'small'}/></IconButton>
             )}
             <Typography sx={{ verticalAlign: 'middle' }} component={'span'} variant={'h6'}>{cartItem.itemsCount}</Typography>
             <Typography sx={{ verticalAlign: 'bottom' }} component={'span'} variant={'overline'}>шт.</Typography>
-            <IconButton color={'success'} onClick={() => dispatch(itemIncrement(props.data.id))}><AddCircleIcon /></IconButton>
+            <IconButton color={'success'} disabled={props.data.quantity <= cartItem.itemsCount} onClick={() => dispatch(itemIncrement(props.data.id))}><AddCircleIcon /></IconButton>
           </Paper>
         )}
 
         {!cartItem && (
           <Button
+            disabled={props.data.quantity < 1}
             color={'success'}
             variant={'contained'}
             endIcon={<ShoppingBasketIcon/>}
@@ -93,6 +104,7 @@ export function ItemComponent (props: ItemComponentProps) {
                 itemsCount: 1,
               };
               dispatch(addToCart(item));
+              dispatch(addToOrder(item.id));
             }}
           >В корзину</Button>
         )}

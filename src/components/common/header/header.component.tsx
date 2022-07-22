@@ -6,6 +6,7 @@ import {
 import {getAppName} from "../../../store/utils";
 import {CartBubbleComponent} from "../cart/cart.component";
 import {UserBubbleComponent} from "../user/user.component";
+import {NavLink} from "react-router-dom";
 
 export function HeaderComponent () {
   return (
@@ -22,7 +23,7 @@ export function HeaderComponent () {
         }}
       >
         <Typography variant="h6" noWrap component="div">
-          {getAppName()}
+          <NavLink style={{ color: 'inherit', textDecoration: 'none' }} to={'/'}>{getAppName()}</NavLink>
         </Typography>
 
         <Stack

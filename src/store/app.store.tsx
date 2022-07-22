@@ -2,11 +2,12 @@ import {configureStore} from "@reduxjs/toolkit";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import catalogSlice from "./catalog/catalog.slice";
 import cartSlice from "./cart/cart.slice";
+import userSlice from "./user/user.slice";
 
 export const store = configureStore({
   reducer: {
     catalog: catalogSlice,
-    // user: null,
+    user: userSlice,
     cart: cartSlice,
   }
 });
