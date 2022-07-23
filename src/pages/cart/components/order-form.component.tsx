@@ -15,7 +15,7 @@ export function OrderFormComponent () {
     <Paper>
       <Box padding={2}>
         <Button disabled={!itemsCount} fullWidth variant={'contained'} color={'success'}>Зарезервировать</Button>
-        <Typography paddingTop={2} variant={"body2"}>Доставка пока недоступна, но вы можете зарезервировать товар и забрать его в магазине.</Typography>
+        <Typography paddingTop={2} variant={"body2"}>Доставка пока недоступна, но вы можете зарезервировать товар и забрать его в пункте выдачи.</Typography>
       </Box>
       <Divider />
       <Box padding={2}>

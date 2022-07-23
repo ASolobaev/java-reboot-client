@@ -5,6 +5,7 @@ import {CategoriesComponent} from "../catalog/category/categories.component";
 import {ItemsComponent} from "../catalog/item/items.component";
 import {CartPage} from "../../pages/cart/cart.page";
 import {Error400Page} from "../../pages/common/Error400.page";
+import {AuthPage} from "../../pages/user/auth.page";
 
 export function AppRoutes () {
   return (
@@ -16,6 +17,7 @@ export function AppRoutes () {
         <Route path={'category'} element={<ItemsComponent />} />
       </Route>
       <Route path={'/user'} element={<Error404Page />} />
+      <Route path={'/auth'} element={<AuthPage />} />
       <Route path={'/cart'} element={<CartPage />} />
 
       <Route path={'/400'} element={<Error400Page />} />
