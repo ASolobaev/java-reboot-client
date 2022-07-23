@@ -1,46 +1,62 @@
-# Getting Started with Create React App
+# SMARKET CLIENT FRONTEND
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Клиентское приложение для курса Java Developer и проекта SMarket
 
-## Available Scripts
+## Важно: приложение адаптировано для работы в двух режимах: dev и prod
 
-In the project directory, you can run:
+Запуск dev режима происходит командой 
 
-### `npm start`
+````shell
+npm run start
+````
+В этом режиме приложение стартует на http://localhost:3000 и использует заранее определенные категории, цены и товары, 
+можно полностью протестировать клиентскую часть без бэкенда.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Запуск prod режима происходит в контейнере docker, для запуска используется Dockerfile.
+В этом режиме приложение разворачивается на nginx и слушает порт 80. Для доступа к контейнеру
+необходимо пробросить любой порт машины на 80 порт контейнера, например использовать команды:
 
-### `npm test`
+````shell
+docker build -t client-smarket .
+docker run -d --name smarket-client-app -p 3000:80 client-smarket
+````
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Чтобы остановить контейнер используйте команду 
 
-### `npm run build`
+````shell
+docker stop smarket-client-app
+````
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Чтобы удалить готовый образ используйте команду
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+````shell
+docker rm smarket-client-app
+docker rmi client-smarket:latest
+````
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Docker-compose
+Вы можете собрать все докерфайлы в один репозиторий для запуска проекта целиком, для этого используйте compose (пример: https://www.baeldung.com/ops/multiple-dockerfiles)
+Чтобы собрать клиент из стороннего репозитория добавьте в него Dockerfile.client и запустите build в compose файле
 
-### `npm run eject`
+Подсказка: вы можете протестировать работу Dockerfile.client командой
+````shell
+docker build -f Dockerfile.client -t client-smarket .
+docker run -d --name smarket-client-app -p 3000:80 client-smarket
+````
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Настройки проекта
+Для корректного взаимодействия с микро-сервисами необходимо указать адреса, на которых они расположены.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### stock-service
+Конфигурация расположена в файле /src/store/stock.api.ts
+За адрес сервера отвечает параметр baseUrl
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### price-service
+Конфигурация расположена в файле /src/store/price.api.ts
+За адрес сервера отвечает параметр baseUrl
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Приложение
+#### Чтобы поменять title приложения нужно обновить функцию getAppName() в файле /src/store/utils.ts
+#### Все наборы mock данных также расположены в utils.ts
+#### Авторизация пользователей не входит в данную версию приложения и для имитации пользователей используется файл mock-user.component.ts
