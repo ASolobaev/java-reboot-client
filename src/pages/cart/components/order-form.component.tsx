@@ -5,16 +5,18 @@ import {
   selectOrderedItemCount,
   selectOrderPrice
 } from "../../../store/cart/cart.slice";
+import {selectUser} from "../../../store/user/user.slice";
 
 export function OrderFormComponent () {
   const itemsCount = useAppSelector(selectOrderedItemCount);
   const orderPrice = useAppSelector(selectOrderPrice);
   const order = useAppSelector(selectOrder);
+  const user = useAppSelector(selectUser);
 
   return (
     <Paper>
       <Box padding={2}>
-        <Button disabled={!itemsCount} fullWidth variant={'contained'} color={'success'}>Зарезервировать</Button>
+        <Button disabled={!itemsCount || !user.id} fullWidth variant={'contained'} color={'success'}>Зарезервировать</Button>
         <Typography paddingTop={2} variant={"body2"}>Доставка пока недоступна, но вы можете зарезервировать товар и забрать его в пункте выдачи.</Typography>
       </Box>
       <Divider />
