@@ -5,5 +5,5 @@ export interface ItemInterface {
   manufacturer: string;
   category: number;
   quantity: number;
-  price: number;
+  price: number|null;
 }

@@ -34,6 +34,15 @@ export const catalogSlice = createSlice({
     setItemsList: (state: CatalogState, action: PayloadAction<ItemInterface[]>) => {
       state.itemsList = action.payload;
     },
+    updateItem: (state: CatalogState, action: PayloadAction<ItemInterface>) => {
+      for (let i = 0; i < state.itemsList.length; i++) {
+        const item = state.itemsList[i];
+        if (item.id === action.payload.id) {
+          state.itemsList[i] = action.payload;
+          break;
+        }
+      }
+    }
   },
 });
 
@@ -42,6 +51,7 @@ export const {
   setItemsRequestStatus,
   setCategoriesList,
   setItemsList,
+  updateItem,
 } = catalogSlice.actions;
 
 export const selectCategoriesRequestStatus = (state: AppState) => state.catalog.categoriesRequestStatus;

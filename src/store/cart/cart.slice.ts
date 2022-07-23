@@ -1,17 +1,20 @@
 import {CartItemInterface} from "../../interfaces/cart-item.interface";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppState} from "../app.store";
+import {RequestStatuses} from "../../interfaces/common/request-statuses.enum";
 
 interface CartState {
   lastUpdate: Date | null;
   items: CartItemInterface[];
   orderItems: number[];
+  orderRequestStatus: RequestStatuses;
 }
 
 const initialState: CartState = {
   lastUpdate: null,
   items: [],
   orderItems: [],
+  orderRequestStatus: RequestStatuses.IDLE,
 };
 
 export const cartSlice = createSlice({
@@ -24,6 +27,15 @@ export const cartSlice = createSlice({
     removeFromCart: (state: CartState, action: PayloadAction<CartItemInterface>) => {
       state.items.map((e, index) => {
         if (e.id === action.payload.id) {
+          state.items.splice(index, 1);
+          return true;
+        }
+        return false;
+      });
+    },
+    removeFromCartById: (state: CartState, action: PayloadAction<number>) => {
+      state.items.map((e, index) => {
+        if (e.id === action.payload) {
           state.items.splice(index, 1);
           return true;
         }
@@ -56,12 +68,15 @@ export const cartSlice = createSlice({
     },
     removeFromOrder: (state: CartState, action: PayloadAction<number>) => {
       state.orderItems.map((e: number, index) => {
-        if (e == action.payload) {
+        if (e === action.payload) {
           state.orderItems.splice(index, 1);
           return true;
         }
         return false;
       });
+    },
+    setOrderRequestStatus: (state: CartState, action: PayloadAction<RequestStatuses>) => {
+      state.orderRequestStatus = action.payload;
     },
   },
 });
@@ -86,7 +101,7 @@ export const selectOrderPrice = (state: AppState) => {
       const item = state.cart.items[j];
 
       if (item.id === id) {
-        result += item.price * item.itemsCount;
+        result += (item.price || 0) * item.itemsCount;
         break;
       }
     }
@@ -110,6 +125,7 @@ export const selectOrderedItemCount = (state: AppState) => {
 }
 
 export const selectOrder = (state: AppState) => state.cart.items.filter((item) => state.cart.orderItems.indexOf(item.id) !== -1);
+export const selectOrderStatus = (state: AppState) => state.cart.orderRequestStatus;
 
 export const {
   addToCart,
@@ -119,6 +135,8 @@ export const {
   clearCart,
   addToOrder,
   removeFromOrder,
+  setOrderRequestStatus,
+  removeFromCartById,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

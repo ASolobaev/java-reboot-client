@@ -8,6 +8,8 @@ import {
 import {RequestStatuses} from "../interfaces/common/request-statuses.enum";
 import {CategoryInterface} from "../interfaces/category.interface";
 import {ItemInterface} from "../interfaces/item.interface";
+import {removeFromCartById, removeFromOrder, setOrderRequestStatus} from "./cart/cart.slice";
+import {OrderDto} from "../interfaces/order.dto";
 
 export const isProduction = (): Boolean => {
   return process.env.NODE_ENV === 'production';
@@ -86,6 +88,24 @@ export const useMockItems = (categoryId: number) => (dispatch: AppDispatch) => {
   dispatch(setItemsList(mockedItems));
   dispatch(setItemsRequestStatus(RequestStatuses.SUCCESS));
 };
+
+export const useMockOrdering = (order: OrderDto) => (dispatch: AppDispatch) => {
+  dispatch(setOrderRequestStatus(RequestStatuses.LOADING));
+  setTimeout(() => {
+    const useSuccess = true;
+    if (useSuccess) {
+      dispatch(setOrderRequestStatus(RequestStatuses.SUCCESS));
+      for (let i = 0; i < order.items.length; i++) {
+        const item = order.items[i]
+        dispatch(removeFromOrder(item.id));
+        dispatch(removeFromCartById(item.id));
+      }
+    } else {
+      dispatch(setOrderRequestStatus(RequestStatuses.ERROR));
+    }
+    setTimeout(() => dispatch(setOrderRequestStatus(RequestStatuses.IDLE)), 5000);
+  }, 5000);
+}
 
 export const getAppName = () => 'SMarket';
 export const getDrawerWidth = () => 240;
