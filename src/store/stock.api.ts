@@ -2,7 +2,7 @@ import axios, {AxiosRequestConfig} from "axios";
 
 const getBaseUrl = () => {
   if (process.env.NODE_ENV !== 'production') return 'http://localhost:5757';
-  return 'http://localhost:8086';
+  return 'http://localhost:8085';
 }
 
 const config: AxiosRequestConfig = {
