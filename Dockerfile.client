@@ -3,6 +3,7 @@ FROM node as builder
 WORKDIR /usr/src/app
 RUN git clone https://github.com/ASolobaev/java-reboot-client.git &&\
  cd java-reboot-client &&\
+ ls &&\
  npm ci &&\
  npm run build
 

@@ -10,6 +10,7 @@ import {CategoryInterface} from "../interfaces/category.interface";
 import {ItemInterface} from "../interfaces/item.interface";
 import {removeFromCartById, removeFromOrder, setOrderRequestStatus} from "./cart/cart.slice";
 import {OrderDto} from "../interfaces/order.dto";
+import {PostItemInterface} from "../interfaces/post-item.interface";
 
 export const isProduction = (): Boolean => {
   return process.env.NODE_ENV === 'production';
@@ -94,12 +95,16 @@ export const useMockOrdering = (order: OrderDto) => (dispatch: AppDispatch) => {
   setTimeout(() => {
     const useSuccess = true;
     if (useSuccess) {
+      order.items.map(async (e) => {
+        const item: PostItemInterface = {
+          productId: e.id,
+          quantity: e.itemsCount,
+          userId: order.userId,
+        }
+        dispatch(removeFromCartById(item.productId));
+        dispatch(removeFromOrder(item.productId));
+      });
       dispatch(setOrderRequestStatus(RequestStatuses.SUCCESS));
-      for (let i = 0; i < order.items.length; i++) {
-        const item = order.items[i]
-        dispatch(removeFromOrder(item.id));
-        dispatch(removeFromCartById(item.id));
-      }
     } else {
       dispatch(setOrderRequestStatus(RequestStatuses.ERROR));
     }
